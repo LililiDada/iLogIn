@@ -22,6 +22,7 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 const paths = require("./paths");
 const modules = require("./modules");
 const getClientEnvironment = require("./env");
+const modifyVars = require("./modifyVars");
 const ModuleNotFoundPlugin = require("react-dev-utils/ModuleNotFoundPlugin");
 const ForkTsCheckerWebpackPlugin = require("react-dev-utils/ForkTsCheckerWebpackPlugin");
 const typescriptFormatter = require("react-dev-utils/typescriptFormatter");
@@ -97,7 +98,7 @@ module.exports = function (webpackEnv) {
   const shouldUseReactRefresh = env.raw.FAST_REFRESH;
 
   // common function to get style loaders
-  const getStyleLoaders = (cssOptions, lessOptions, preProcessor) => {
+  const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
       isEnvDevelopment && require.resolve("style-loader"),
       isEnvProduction && {
@@ -111,10 +112,6 @@ module.exports = function (webpackEnv) {
       {
         loader: require.resolve("css-loader"),
         options: cssOptions,
-      },
-      {
-        loader: require.resolve("less-loader"),
-        options: lessOptions,
       },
       {
         // Options for PostCSS as we reference these options twice
@@ -143,21 +140,32 @@ module.exports = function (webpackEnv) {
       },
     ].filter(Boolean);
     if (preProcessor) {
-      loaders.push(
-        {
-          loader: require.resolve("resolve-url-loader"),
-          options: {
-            sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
-            root: paths.appSrc,
-          },
-        },
-        {
+      if (preProcessor === "less-loader") {
+        loaders.push({
           loader: require.resolve(preProcessor),
-          options: {
-            sourceMap: true,
+          options:{
+            sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+            modifyVars: modifyVars,
+            javascriptEnabled: true
+          }
+        })
+      }else{
+        loaders.push(
+          {
+            loader: require.resolve("resolve-url-loader"),
+            options: {
+              sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+              root: paths.appSrc,
+            },
           },
-        }
-      );
+          {
+            loader: require.resolve(preProcessor),
+            options: {
+              sourceMap: true,
+            },
+          }
+        );
+      }
     }
     return loaders;
   };
@@ -535,20 +543,26 @@ module.exports = function (webpackEnv) {
             {
               test: lessRegex,
               exclude: lessModuleRegex,
-              use: getStyleLoaders({
-                importLoaders: 1,
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-              }),
+              use: getStyleLoaders(
+                {
+                  importLoaders: 1,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                },
+                "less-loader"
+              ),
               sideEffects: true,
             },
             {
               test: lessModuleRegex,
-              use: getStyleLoaders({
-                importLoaders: 1,
-                sourceMap: isEnvProduction && shouldUseSourceMap,
-                modules: true,
-                getLocalIdent: getCSSModuleLocalIdent,
-              }),
+              use: getStyleLoaders(
+                {
+                  importLoaders: 1,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                  modules: true,
+                  getLocalIdent: getCSSModuleLocalIdent,
+                },
+                "less-loader"
+              ),
             },
 
             // "file" loader makes sure those assets get served by WebpackDevServer.
