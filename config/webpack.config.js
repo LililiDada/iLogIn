@@ -148,6 +148,15 @@ module.exports = function (webpackEnv) {
             modifyVars: modifyVars,
             javascriptEnabled: true
           }
+        },
+        {
+            loader: require.resolve("sass-resources-loader"),
+            options: {
+              resources: [
+                // 这里按照你的文件路径填写
+                path.resolve(__dirname, './../src/assets/styles/common.less')
+              ]
+            }
         })
       }else{
         loaders.push(

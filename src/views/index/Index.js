@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from 'antd';
 class Index extends React.Component {
     constructor(props) {
         super(props);
@@ -9,6 +10,7 @@ class Index extends React.Component {
     render(){
         return (
             <div>
+                <Button type="primary" size="large">我是按钮</Button>
                 <h1>我是首页</h1>
             </div>
         )
