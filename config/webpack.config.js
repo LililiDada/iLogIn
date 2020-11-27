@@ -146,7 +146,9 @@ module.exports = function (webpackEnv) {
           options:{
             sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
             modifyVars: modifyVars,
-            javascriptEnabled: true
+            javascriptEnabled: true,
+            modules:true,
+            importLoaders: 2,
           }
         },
         {
@@ -154,7 +156,8 @@ module.exports = function (webpackEnv) {
             options: {
               resources: [
                 // 这里按照你的文件路径填写
-                path.resolve(__dirname, './../src/assets/styles/common.less')
+                path.resolve(__dirname, './../src/assets/styles/common.less'),
+                path.resolve(__dirname, './../src/assets/styles/normalize.less')
               ]
             }
         })
@@ -554,7 +557,7 @@ module.exports = function (webpackEnv) {
               exclude: lessModuleRegex,
               use: getStyleLoaders(
                 {
-                  importLoaders: 1,
+                  importLoaders: 3,
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                 },
                 "less-loader"
@@ -565,7 +568,7 @@ module.exports = function (webpackEnv) {
               test: lessModuleRegex,
               use: getStyleLoaders(
                 {
-                  importLoaders: 1,
+                  importLoaders: 3,
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                   modules: true,
                   getLocalIdent: getCSSModuleLocalIdent,
