@@ -141,29 +141,40 @@ module.exports = function (webpackEnv) {
     ].filter(Boolean);
     if (preProcessor) {
       if (preProcessor === "less-loader") {
-        loaders.push({
-          loader: require.resolve(preProcessor),
-          options:{
-            sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
-            modifyVars: modifyVars,
-            javascriptEnabled: true
-          }
-        },
-        {
+        loaders.push(
+          {
+            loader: require.resolve(preProcessor),
+            options: {
+              sourceMap: isEnvProduction
+                ? shouldUseSourceMap
+                : isEnvDevelopment,
+              modifyVars: modifyVars,
+              javascriptEnabled: true,
+              importLoaders: 1,
+            },
+          },
+          {
             loader: require.resolve("sass-resources-loader"),
             options: {
               resources: [
                 // 这里按照你的文件路径填写
-                path.resolve(__dirname, './../src/assets/styles/common.less')
-              ]
-            }
-        })
-      }else{
+                path.resolve(__dirname, "./../src/assets/styles/common.less"),
+                path.resolve(
+                  __dirname,
+                  "./../src/assets/styles/normalize.less"
+                ),
+              ],
+            },
+          }
+        );
+      } else {
         loaders.push(
           {
             loader: require.resolve("resolve-url-loader"),
             options: {
-              sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+              sourceMap: isEnvProduction
+                ? shouldUseSourceMap
+                : isEnvDevelopment,
               root: paths.appSrc,
             },
           },
@@ -554,7 +565,7 @@ module.exports = function (webpackEnv) {
               exclude: lessModuleRegex,
               use: getStyleLoaders(
                 {
-                  importLoaders: 1,
+                  importLoaders: 3,
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                 },
                 "less-loader"
@@ -565,7 +576,7 @@ module.exports = function (webpackEnv) {
               test: lessModuleRegex,
               use: getStyleLoaders(
                 {
-                  importLoaders: 1,
+                  importLoaders: 3,
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                   modules: true,
                   getLocalIdent: getCSSModuleLocalIdent,
