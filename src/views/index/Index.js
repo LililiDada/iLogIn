@@ -1,7 +1,11 @@
 import React from "react";
-import {Layout} from "antd"
-import AssideMenu from "@/components/asideMenu/Index"
-import LayoutHeader from "./components/header"
+import { Layout } from "antd";
+import PrivateRouter from "@/components/privateRouter/Index";
+import AssideMenu from "@/components/asideMenu/Index";
+import LayoutHeader from "./components/header";
+import TeacherManger from "../teacharManger/Index";
+import StudentManger from "../studentManger/Index";
+import "./index.less";
 const { Header, Sider, Content } = Layout;
 class Index extends React.Component {
   constructor(props) {
@@ -13,16 +17,17 @@ class Index extends React.Component {
   render() {
     return (
       <div>
-        <Layout>
+        <Layout style={{ minHeight: "100vh" }}>
           <Sider>
             <AssideMenu></AssideMenu>
           </Sider>
           <Layout>
-            <Header>
+            <Header className="layout-header">
               <LayoutHeader />
             </Header>
-            <Content>
-              内容
+            <Content className="layout-content">
+              <PrivateRouter path="/index" exact component={TeacherManger} />
+              <PrivateRouter path="/index/student" component={StudentManger} />
             </Content>
           </Layout>
         </Layout>
