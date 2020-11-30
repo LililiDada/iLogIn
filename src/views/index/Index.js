@@ -1,5 +1,8 @@
 import React from "react";
-import { Button } from "antd";
+import {Layout} from "antd"
+import AssideMenu from "@/components/asideMenu/Index"
+import LayoutHeader from "./components/header"
+const { Header, Sider, Content } = Layout;
 class Index extends React.Component {
   constructor(props) {
     super(props);
@@ -10,8 +13,19 @@ class Index extends React.Component {
   render() {
     return (
       <div>
-        {/* <Button type="primary" size="large">我是按钮</Button> */}
-        <h1>我是首页</h1>
+        <Layout>
+          <Sider>
+            <AssideMenu></AssideMenu>
+          </Sider>
+          <Layout>
+            <Header>
+              <LayoutHeader />
+            </Header>
+            <Content>
+              内容
+            </Content>
+          </Layout>
+        </Layout>
       </div>
     );
   }
