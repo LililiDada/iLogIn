@@ -9,5 +9,6 @@ const modifyVars = {
   "@menu-inline-toplevel-item-height": "45px",
   "@layout-header-background": "unset",
   "@layout-body-background": "unset",
+  "@table-header-bg": "@menu-dark-bg",
 };
 module.exports = modifyVars;
