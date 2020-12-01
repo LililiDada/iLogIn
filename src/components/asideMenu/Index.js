@@ -1,4 +1,5 @@
 import React from "react";
+import {Link } from "react-router-dom"
 import { Menu } from 'antd';
 import {
     UserOutlined,
@@ -19,8 +20,8 @@ class AsideMenu extends React.Component {
                     theme="dark"
                     className="aside-menu"
                 >
-                    <Menu.Item icon={<UserAddOutlined />}>教师管理</Menu.Item>
-                    <Menu.Item icon={<UserOutlined />}>学生管理</Menu.Item>
+                    <Menu.Item icon={<UserAddOutlined />}><Link to="/index">教师管理</Link></Menu.Item>
+                    <Menu.Item icon={<UserOutlined />}><Link to="/index/student">学生管理</Link></Menu.Item>
                 </Menu>
             </React.Fragment>
         )
