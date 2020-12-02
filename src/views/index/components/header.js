@@ -3,7 +3,7 @@ import "./header.less";
 class Index extends Component {
   render() {
     return (
-      <div className="flex-ac">
+      <div className="flex-bc">
         <h1 className="header-title">学生管理</h1>
         <div className="flex-cc">
           <img src="/avatar.png" alt="avatar" className="header-avatar" />
