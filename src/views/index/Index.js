@@ -7,23 +7,32 @@ import TeacherManger from "../teacharManger/Index";
 import StudentManger from "../studentManger/Index";
 import "./index.less";
 const { Header, Sider, Content } = Layout;
+
 class Index extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props, "props");
-    this.state = {};
+    this.state = {
+      menuName: "教师管理",
+    };
   }
 
+  handleMenu = (e) => {
+    this.setState({
+      menuName: e,
+    });
+  };
+
   render() {
+    let { menuName } = this.state;
     return (
       <div>
         <Layout style={{ minHeight: "100vh" }}>
           <Sider>
-            <AssideMenu></AssideMenu>
+            <AssideMenu handleMenu={this.handleMenu}></AssideMenu>
           </Sider>
           <Layout>
             <Header className="layout-header">
-              <LayoutHeader />
+              <LayoutHeader menuName={menuName} />
             </Header>
             <Content className="layout-content">
               <PrivateRouter path="/index" exact component={TeacherManger} />
